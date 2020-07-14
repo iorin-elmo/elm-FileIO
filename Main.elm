@@ -43,7 +43,7 @@ update msg model =
       , Cmd.none
       )
     SelectFile file ->
-      if isExpectedFile file
+      if isExpected file
       then
         ( model
         , Task.perform Open (File.toString file)
