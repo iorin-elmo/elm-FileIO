@@ -5344,6 +5344,13 @@ var $elm$file$File$Select$file = F2(
 			toMsg,
 			_File_uploadOne(mimes));
 	});
+var $elm$file$File$mime = _File_mime;
+var $author$project$Main$isExpected = function (file) {
+	return A2(
+		$elm$core$String$contains,
+		'text',
+		$elm$file$File$mime(file));
+};
 var $elm$file$File$toString = _File_toString;
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -5365,12 +5372,16 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 			default:
 				var file = msg.a;
-				return _Utils_Tuple2(
+				return $author$project$Main$isExpected(file) ? _Utils_Tuple2(
 					model,
 					A2(
 						$elm$core$Task$perform,
 						$author$project$Main$Open,
-						$elm$file$File$toString(file)));
+						$elm$file$File$toString(file))) : _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{fileText: 'FileOpenError : unexpectedFileType'}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$Pressed = {$: 'Pressed'};
