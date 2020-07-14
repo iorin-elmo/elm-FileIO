@@ -22,6 +22,10 @@ type Msg
   | Open String
   | SelectFile File
 
+isExpected : File -> Bool
+isExpected file =
+  String.contains "text" (File.mime file)
+  
 
 --Update--
 
@@ -39,9 +43,17 @@ update msg model =
       , Cmd.none
       )
     SelectFile file ->
-      ( model
-      , Task.perform Open (File.toString file)
-      )
+      if isExpectedFile file
+      then
+        ( model
+        , Task.perform Open (File.toString file)
+        )
+      else
+        ( { model
+          | fileText = "FileOpenError : unexpectedFileType"
+          }
+        , Cmd.none
+        )
 
 --View--
 
